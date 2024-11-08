@@ -1,4 +1,5 @@
-__pychache__
+__pycache__
 fastapi-env
 .DS_Store
 .venv
+blog.env
