@@ -1,5 +1,7 @@
 from fastapi import FastAPI
-
+from typing import Optional
+from pydantic import BaseModel
+import uvicorn
 # creating an Instance --> app
 app = FastAPI()
 
@@ -9,7 +11,7 @@ app = FastAPI()
 # path operation decorator --> @app
 # operation --> GET
 # path --> ("/")
-def index(limit,published : bool):
+def index(limit = 10,published : bool = True, sort: Optional[str] = None):
 # path operation function --> def index()
  if published:
     return {'data': f'{limit} published blog from the db'}
@@ -33,6 +35,16 @@ def show(id : int):
 
 
 @app.get('/blog/{id}/comments')
-def comments(id): 
+def comments(id : int): 
     return {'data':{'comments':{'1','2'}}}
-    
+
+class Blog(BaseModel):
+    title : str
+    body : str
+    published: Optional[bool]
+@app.post('/blog')
+def create_blog(request : Blog):
+    return {'data':'blog is created with the Title as {request.title}'}
+
+# if __name__ == '__main__':
+#     uvicorn.run(app,host = '127.0.0.1',port=9000)
