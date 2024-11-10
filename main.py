@@ -1,51 +1,41 @@
-from fastapi import FastAPI
-from typing import Optional
-from pydantic import BaseModel
-import uvicorn
-# creating an Instance --> app
+from fastapi import FastAPI, Depends, status,HTTPException
+from blog import schemas, models
+# " . " means from the same directory
+from sqlalchemy.orm import Session
+from .blog.database import engine, SessionLocal
+
 app = FastAPI()
 
+models.Base.metadata.create_all(bind=engine)
 
-@app.get('/blog')
-# only GET 10 published blogs
-# path operation decorator --> @app
-# operation --> GET
-# path --> ("/")
-def index(limit = 10,published : bool = True, sort: Optional[str] = None):
-# path operation function --> def index()
- if published:
-    return {'data': f'{limit} published blog from the db'}
- else:
-    return {'data': f'{limit} blog from the db'}
-
-    
-@app.get('/blog/unpublished')
-def unpublished(): 
-    return {'data': "all Unpublished Blogs"}
-    
-@app.get('/blog/{id}')
-# path operation decorator --> @app
-# operation --> GET
-# path --> ("/about")
-# {id} --> path parameter
-def show(id : int):
-    #path operation function --> def show()
-    #fetch blog id = id
-    return {'data': id}
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
-@app.get('/blog/{id}/comments')
-def comments(id : int): 
-    return {'data':{'comments':{'1','2'}}}
+@app.get("/")
+def Landing_page_blog():
+    return "Welcome to my Blog"
 
-class Blog(BaseModel):
-    title : str
-    body : str
-    published: Optional[bool]
+@app.post('/blog', status_code=status.HTTP_201_CREATED)
+def create(request: schemas.Blog, db: Session = Depends(get_db)):
+    new_blog = models.Blog(title=request.title, body=request.body)
+    db.add(new_blog)
+    db.commit()
+    db.refresh(new_blog)
+    return new_blog
 
-@app.post('/blog')
-def create_blog(request : Blog):
-    return {'data':f'blog is created with the Title as {request.title}'}
+@app.get("/blog")
+def get_all_blog(db: Session = Depends(get_db)):
+    blogs = db.query(models.Blog).all()
+    return blogs
 
-# if __name__ == '__main__':
-#     uvicorn.run(app,host = '127.0.0.1',port=9000)
+@app.get('/blog/{id}', status_code=200)
+def show(id: int, db: Session = Depends(get_db)):
+    blog = db.query(models.Blog).filter(models.Blog.id == id).first()
+    if not blog:
+       raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = f"Blog with the id {id} is not available")
+    return blog
