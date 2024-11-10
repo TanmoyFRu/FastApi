@@ -42,9 +42,10 @@ class Blog(BaseModel):
     title : str
     body : str
     published: Optional[bool]
+
 @app.post('/blog')
 def create_blog(request : Blog):
-    return {'data':'blog is created with the Title as {request.title}'}
+    return {'data':f'blog is created with the Title as {request.title}'}
 
 # if __name__ == '__main__':
 #     uvicorn.run(app,host = '127.0.0.1',port=9000)
