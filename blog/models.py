@@ -5,7 +5,8 @@ from .database import Base
 
 
 class Blog(Base):
-    __tablename__ = 'blog'
+    __tablename__ = 'blog_posts'
+    
     id = Column(Integer, primary_key=True,index=True)
     title = Column(String)
     body = Column(String)
