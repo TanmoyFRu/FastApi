@@ -8,5 +8,14 @@ class Blog(BaseModel):
     
     
 class Show_Blog(Blog):
+    title : str
+    body : str
+    
     class Config():
         orm_mode = True
+
+
+class User(BaseModel):
+    name : str 
+    email : str
+    password: str
