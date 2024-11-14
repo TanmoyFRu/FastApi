@@ -2,4 +2,4 @@ __pycache__
 fastapi-env
 .venv
 blog-env
-
+env
