@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class BlogBase(BaseModel):
@@ -12,7 +12,7 @@ class Blog(BlogBase):
 
 class User(BaseModel):
     name : str 
-    email : str
+    email : Optional[str] = None
     password: str
     
 
@@ -32,3 +32,7 @@ class Show_Blog(BaseModel):
     
     class Config():
         orm_mode = True
+        
+class Login(BaseModel):
+    username : str
+    password : str
