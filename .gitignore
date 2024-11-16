@@ -3,3 +3,4 @@ fastapi-env
 .venv
 blog-env
 env
+__init__
