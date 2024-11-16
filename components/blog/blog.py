@@ -1,8 +1,10 @@
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter,Depends,status
-from .. import oauth2, schemas, database
-from ..repository import blogRepository
+
+from ..utils import oauth2
+from .. import schemas, database
+from . import blogRepository
  
  
 router = APIRouter(
