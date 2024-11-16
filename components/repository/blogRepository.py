@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from . import blogmodel
+from ..blog import blogmodel
 from .. import schemas
 from fastapi import HTTPException,status,Response
 

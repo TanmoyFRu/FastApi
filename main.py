@@ -1,6 +1,6 @@
 
 from fastapi import FastAPI
-from components import models
+from components.blog import blogmodel
 from components.blog import blog
 from components.database import engine
 from components.login import authentication
@@ -10,7 +10,7 @@ from components import Landing_page
 
 app = FastAPI()
 
-models.Base.metadata.create_all(bind=engine)
+blogmodel.Base.metadata.create_all(bind=engine)
 
 
 app.include_router(Landing_page.router)
