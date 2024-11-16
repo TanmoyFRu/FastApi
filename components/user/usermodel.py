@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 
 
 
-
 class User(Base):
     __tablename__ = 'users_post'
     

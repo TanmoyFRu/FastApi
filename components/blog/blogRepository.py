@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
-
 from . import blogModel
-from .. import schemas
+from ..user import userSchema
 from fastapi import HTTPException,status,Response
 
 
@@ -9,7 +8,7 @@ def get_all(db:Session):
     blogs = db.query(blogModel.Blog).all()
     return blogs
 
-def create(request :schemas.Blog,db : Session):
+def create(request :userSchema.Blog,db : Session):
     new_blog = blogModel.Blog(title=request.title, body=request.body, user_id = 1)
     db.add(new_blog)
     db.commit()
@@ -24,7 +23,7 @@ def delete(id : int,db : Session):
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT) 
 
-def update(id: int , db : Session, request:schemas.Blog):
+def update(id: int , db : Session, request:userSchema.Blog):
      blog_to_update = db.query(blogModel.Blog).filter(blogModel.Blog.id == id).first()
      if not blog_to_update:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with ID {id} not found")
