@@ -1,0 +1,28 @@
+To install venv (Virtual Environment)
+
+--> python -m venv .env / python3 -m venv .env (. might be any sort of name you want to give to your virtual environment)
+
+-->.env\Scripts\activate
+
+To confirm the virtual environment is activated, check the location of your Python interpreter:
+
+-->where python
+
+While the virtual environment is active, the above command will output a filepath that includes the .env directory, by ending with the following:
+
+-->.env\Scripts\python
+ 
+ 
+To install the requirements
+
+--> pip install -r requirements.txt / pip3 install -r requirements.txt
+
+
+To have a random Secret key
+
+-->python
+-->import secrets
+-->secrets.token_hex(16)
+
+(N.B - You can give any length to the secret key as per your requirement)
+
